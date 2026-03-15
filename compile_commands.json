@@ -1,1 +1,83 @@
-[]
+[
+  {
+    "file": "/home/liuranshen/.config/utils/battery_monitor/src/handler.c",
+    "arguments": [
+      "gcc",
+      "-std=c99",
+      "-Wall",
+      "-ggdb",
+      "-I/home/liuranshen/.config/utils/battery_monitor/include",
+      "-I/usr/include/gdk-pixbuf-2.0",
+      "-I/usr/include/glycin-2",
+      "-I/usr/include/freetype2",
+      "-I/usr/include/libpng16",
+      "-I/usr/include/gio-unix-2.0",
+      "-I/usr/include/libmount",
+      "-I/usr/include/blkid",
+      "-I/usr/include/glib-2.0",
+      "-I/usr/lib/glib-2.0/include",
+      "-I/usr/include/sysprof-6",
+      "-pthread",
+      "-c",
+      "/home/liuranshen/.config/utils/battery_monitor/src/handler.c",
+      "-o",
+      "/home/liuranshen/.config/utils/battery_monitor/obj/handler.o"
+    ],
+    "directory": "/home/liuranshen/.config/utils/battery_monitor",
+    "output": "/home/liuranshen/.config/utils/battery_monitor/obj/handler.o"
+  },
+  {
+    "file": "/home/liuranshen/.config/utils/battery_monitor/src/main.c",
+    "arguments": [
+      "gcc",
+      "-std=c99",
+      "-Wall",
+      "-ggdb",
+      "-I/home/liuranshen/.config/utils/battery_monitor/include",
+      "-I/usr/include/gdk-pixbuf-2.0",
+      "-I/usr/include/glycin-2",
+      "-I/usr/include/freetype2",
+      "-I/usr/include/libpng16",
+      "-I/usr/include/gio-unix-2.0",
+      "-I/usr/include/libmount",
+      "-I/usr/include/blkid",
+      "-I/usr/include/glib-2.0",
+      "-I/usr/lib/glib-2.0/include",
+      "-I/usr/include/sysprof-6",
+      "-pthread",
+      "-c",
+      "/home/liuranshen/.config/utils/battery_monitor/src/main.c",
+      "-o",
+      "/home/liuranshen/.config/utils/battery_monitor/obj/main.o"
+    ],
+    "directory": "/home/liuranshen/.config/utils/battery_monitor",
+    "output": "/home/liuranshen/.config/utils/battery_monitor/obj/main.o"
+  },
+  {
+    "file": "/home/liuranshen/.config/utils/battery_monitor/src/utils.c",
+    "arguments": [
+      "gcc",
+      "-std=c99",
+      "-Wall",
+      "-ggdb",
+      "-I/home/liuranshen/.config/utils/battery_monitor/include",
+      "-I/usr/include/gdk-pixbuf-2.0",
+      "-I/usr/include/glycin-2",
+      "-I/usr/include/freetype2",
+      "-I/usr/include/libpng16",
+      "-I/usr/include/gio-unix-2.0",
+      "-I/usr/include/libmount",
+      "-I/usr/include/blkid",
+      "-I/usr/include/glib-2.0",
+      "-I/usr/lib/glib-2.0/include",
+      "-I/usr/include/sysprof-6",
+      "-pthread",
+      "-c",
+      "/home/liuranshen/.config/utils/battery_monitor/src/utils.c",
+      "-o",
+      "/home/liuranshen/.config/utils/battery_monitor/obj/utils.o"
+    ],
+    "directory": "/home/liuranshen/.config/utils/battery_monitor",
+    "output": "/home/liuranshen/.config/utils/battery_monitor/obj/utils.o"
+  }
+]
