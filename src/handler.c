@@ -19,10 +19,10 @@ void handle_ac_change(int current_ac) {
         char msg[128];
 
         if (current_ac) {
-            snprintf(msg, sizeof(msg), "Power plugged in! Current capacity: %d%%", prev_battery_percent);
+            snprintf(msg, sizeof(msg), "Power is connected! Current capacity: %d%%", prev_battery_percent);
             send_notification("🔌 Charging Started", msg, BATTERY_CHARGING_ICON, 5000, NOTIFY_URGENCY_LOW);
         } else {
-            snprintf(msg, sizeof(msg), "Power plugged in! Current capacity: %d%%", prev_battery_percent);
+            snprintf(msg, sizeof(msg), "Power is disconnected! Current capacity: %d%%", prev_battery_percent);
             send_notification("🔋 Charging Stopped", msg,BATTERY_DISCHARING_ICON, 5000, NOTIFY_URGENCY_LOW);
         }
     }
@@ -40,10 +40,10 @@ void handle_battery_status_change(const char* current_status) {
         char msg[128];
 
         if (strcmp(current_status, "Full") == 0) {
-            send_notification("✅ 电池已充满", "建议拔掉充电器以延长电池寿命", CHARGING_COMPLETE_ICON, 5000, NOTIFY_URGENCY_NORMAL);
+            send_notification("✅ The battery is fully charged", "It is recommended to unplug the charger to extend battery life.", CHARGING_COMPLETE_ICON, 5000, NOTIFY_URGENCY_NORMAL);
         } else if (strcmp(current_status, "Charging") == 0) {
-            snprintf(msg, sizeof(msg), "当前电量: %d%%", prev_battery_percent);
-            send_notification("⚡ 正在充电", msg, BATTERY_CHARGING_ICON, 5000, NOTIFY_URGENCY_LOW);
+            snprintf(msg, sizeof(msg), "Current capacity: %d%%", prev_battery_percent);
+            send_notification("⚡ Charging...", msg, BATTERY_CHARGING_ICON, 5000, NOTIFY_URGENCY_LOW);
         }
     }
 }
