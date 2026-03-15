@@ -2,7 +2,7 @@ CC				=	gcc
 OBJ_DIR			=	$(CURDIR)/obj
 SRC_DIR			=	$(CURDIR)/src
 INC_DIR			=	$(CURDIR)/include
-TARGET			=	battery_monitor
+TARGET			=	battery-monitor
 PKG_CONFIG_LIBS	=	libnotify glib-2.0 libudev
 CFLAGS			=	-std=c99 -Wall -ggdb
 INCS			=	-I$(INC_DIR) $(shell pkg-config --cflags $(PKG_CONFIG_LIBS)) 

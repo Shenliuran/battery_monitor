@@ -1,0 +1,15 @@
+[Unit]
+Description=Battery Monitor and Notification Service
+After=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/home/liuranshen/.config/utils/battery_monitor/battery-monitor
+Restart=on-failure
+RestartSec=5
+
+Environment="DISPLAY=:0"
+Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
+
+[Install]
+WantedBy=default.target
