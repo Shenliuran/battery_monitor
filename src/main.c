@@ -16,10 +16,12 @@
 #define LOW_BATTERY_STEP 5
 // ----------------------------------------------------------------
 
-int prev_ac_online = -1;
-int prev_battery_percent = -1;
-char prev_battery_status[32] = {0};
-int last_low_battery_notify = -1;
+BatteryState battery_state = {
+    -1, // prev_ac_online
+    -1, // prev_battery_percent
+    {0},// prev_battery_status[32]
+    -1  // last_low_battery_notify
+};
 
 int main() {
     // 注册信号处理
@@ -68,9 +70,9 @@ int main() {
                         int current_percent = atoi(capacity_str);
 
                         // 初始化状态
-                        if (prev_battery_percent == -1) {
-                            prev_battery_percent = current_percent;
-                            last_low_battery_notify = current_percent;
+                        if (battery_state.prev_battery_percent == -1) {
+                            battery_state.prev_battery_percent = current_percent;
+                            battery_state.last_low_battery_notify = current_percent;
                             printf("[*] Current battery: %d%%\n", current_percent);
                         }
 
@@ -80,7 +82,7 @@ int main() {
                         handle_low_battery(current_percent);
 
                         // 更新电量
-                        prev_battery_percent = current_percent;
+                        battery_state.prev_battery_percent = current_percent;
                     }
 
                     // 释放资源

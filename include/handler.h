@@ -13,10 +13,14 @@
 #define LOW_BATTERY_STEP 5
 
 // 全局状态变量
-extern int prev_ac_online;
-extern int prev_battery_percent;
-extern char prev_battery_status[32];
-extern int last_low_battery_notify;
+typedef struct {
+    int prev_ac_online;
+    int prev_battery_percent;
+    char prev_battery_status[32];
+    int last_low_battery_notify;
+} BatteryState;
+
+extern BatteryState battery_state;
 
 void handle_ac_change(int current_ac);
 
