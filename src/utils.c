@@ -6,8 +6,8 @@
 #include <sys/select.h>
 #include <libnotify/notify.h>
 #include "../include/utils.h"
+#include "glib-object.h"
 
-#define APP_NAME "battery-notifier"  // 通知的应用标识（自定义）
 
 volatile sig_atomic_t running = 1;
 
@@ -44,13 +44,6 @@ char* read_sysfs_file(const char* path) {
 }
 
 int send_notification(const char * title, const char * content, const char * icon_path, gint timeout, NotifyUrgency urgency) {
-    // 1. 初始化 libnotify 库（必须第一步）
-    // 参数：应用名称，会关联到通知的归属
-    if (!notify_init(APP_NAME)) {
-        fprintf(stderr, "Failed to initialize libnotify\n");
-        return EXIT_FAILURE;
-    }
-
     // 2. 创建通知对象
     // 参数：标题、内容、图标（NULL 表示无图标）
     NotifyNotification *notification = notify_notification_new(
@@ -61,7 +54,6 @@ int send_notification(const char * title, const char * content, const char * ico
 
     if (!notification) {
         fprintf(stderr, "Failed to create notification\n");
-        notify_uninit();  // 初始化失败也要清理
         return EXIT_FAILURE;
     }
 
@@ -77,13 +69,11 @@ int send_notification(const char * title, const char * content, const char * ico
         fprintf(stderr, "Failed to show notification: %s\n", error->message);
         g_error_free(error);  // 释放错误对象
         g_object_unref(notification);  // 释放通知对象
-        notify_uninit();
         return EXIT_FAILURE;
     }
 
     // 4. 清理资源（避免内存泄漏）
     g_object_unref(notification);  // 释放通知对象
-    notify_uninit();               // 反初始化 libnotify 库
 
     printf("Notification sent successfully!\n");
     return EXIT_SUCCESS;

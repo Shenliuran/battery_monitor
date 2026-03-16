@@ -14,6 +14,7 @@
 #define STATUS_PATH "/sys/class/power_supply/BAT0/status"
 #define LOW_BATTERY_THRESHOLD 20
 #define LOW_BATTERY_STEP 5
+#define APP_NAME "battery-notifier"  // 通知的应用标识（自定义）
 // ----------------------------------------------------------------
 
 BatteryState battery_state = {
@@ -27,6 +28,12 @@ int main() {
     // 注册信号处理
     signal(SIGINT, handle_signal);
     signal(SIGTERM, handle_signal);
+
+    // 参数：应用名称，会关联到通知的归属
+    if (!notify_init(APP_NAME)) {
+        fprintf(stderr, "Failed to initialize libnotify\n");
+        return EXIT_FAILURE;
+    }
 
     // 初始化 udev
     struct udev* udev = udev_new();
@@ -76,10 +83,13 @@ int main() {
                             printf("[*] Current battery: %d%%\n", current_percent);
                         }
 
-                        // 处理各类变化
-                        handle_ac_change(current_ac);
-                        handle_battery_status_change(status_str);
-                        handle_low_battery(current_percent);
+                        if (handle_ac_change(current_ac) & 
+                            handle_battery_status_change(status_str) &
+                            handle_low_battery(current_percent)) {
+                            fprintf(stderr, "Failed to create battery event handle.\n");
+                            notify_uninit();  // 初始化失败也要清理
+                            return EXIT_FAILURE;
+                        }
 
                         // 更新电量
                         battery_state.prev_battery_percent = current_percent;
@@ -98,6 +108,7 @@ int main() {
     // 清理资源
     udev_monitor_unref(mon);
     udev_unref(udev);
+    notify_uninit();               // 反初始化 libnotify 库
     printf("\n[*] Monitor stopped\n");
 
     return EXIT_SUCCESS;

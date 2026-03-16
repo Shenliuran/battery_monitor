@@ -22,12 +22,12 @@ typedef struct {
 
 extern BatteryState battery_state;
 
-void handle_ac_change(int current_ac);
+int handle_ac_change(int current_ac);
 
 // 处理电池状态变化
-void handle_battery_status_change(const char* current_status);
+int handle_battery_status_change(const char* current_status);
 
 // 处理低电量提醒
-void handle_low_battery(int current_percent);
+int handle_low_battery(int current_percent);
 
 #endif // HANDLER_H
