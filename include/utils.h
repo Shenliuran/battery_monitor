@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <libnotify/notify.h>
 
-static volatile sig_atomic_t running = 1;
+extern volatile sig_atomic_t running;
 
 void handle_signal(int sig);
 

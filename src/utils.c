@@ -9,7 +9,7 @@
 
 #define APP_NAME "battery-notifier"  // 通知的应用标识（自定义）
 
-
+volatile sig_atomic_t running = 1;
 
 // 信号处理函数（优雅退出）
 void handle_signal(int sig) {

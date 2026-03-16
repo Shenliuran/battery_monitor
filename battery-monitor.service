@@ -1,15 +1,31 @@
 [Unit]
 Description=Battery Monitor and Notification Service
-After=graphical.target
+After=graphical-session.target
+# 确保关机时优先停止，避免依赖资源消失
+Before=shutdown.target reboot.target halt.target graphical-session.target
+Conflicts=shutdown.target reboot.target halt.target
 
 [Service]
 Type=simple
 ExecStart=/home/liuranshen/.config/utils/battery_monitor/battery-monitor
-Restart=on-failure
+Restart=always
 RestartSec=5
 
+# 图形环境变量
 Environment="DISPLAY=:0"
 Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
+
+# ========== 核心：暴力停止配置 ==========
+# 1. 停止时直接发 SIGKILL（强制杀死），跳过 SIGTERM
+KillSignal=SIGKILL
+# 2. 超时时间设为 1 秒（几乎立刻执行）
+TimeoutStopSec=1
+# 3. 杀死整个控制组的所有进程，不留残留
+KillMode=control-group
+# 4. 确保最终一定会发 SIGKILL
+SendSIGKILL=yes
+# 5. 明确正常退出状态
+SuccessExitStatus=0 9
 
 [Install]
 WantedBy=default.target
