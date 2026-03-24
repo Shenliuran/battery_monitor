@@ -22,7 +22,7 @@ typedef struct {
 
 extern BatteryState battery_state;
 
-int handle_ac_change(int current_ac);
+int handle_ac_change(int current_ac, const char* current_status, int charge_start_threshold);
 
 // 处理电池状态变化
 int handle_battery_status_change(const char* current_status);

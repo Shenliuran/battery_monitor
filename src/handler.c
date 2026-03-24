@@ -8,7 +8,7 @@
 
 
 // 处理 AC 适配器状态变化
-int handle_ac_change(int current_ac) {
+int handle_ac_change(int current_ac, const char* current_status, int charge_start_threshold) {
     if (battery_state.prev_ac_online == -1) {
         battery_state.prev_ac_online = current_ac;
         return EXIT_SUCCESS;
@@ -17,13 +17,17 @@ int handle_ac_change(int current_ac) {
     if (current_ac != battery_state.prev_ac_online) {
         battery_state.prev_ac_online = current_ac;
         char msg[128];
+        int is_charging = strcmp(battery_state.prev_battery_status, current_status);
 
-        if (current_ac) {
-            snprintf(msg, sizeof(msg), "Power is connected! Current capacity: %d%%", battery_state.prev_battery_percent);
-            return send_notification("🔌 Charging Started", msg, BATTERY_CHARGING_ICON, 5000, NOTIFY_URGENCY_LOW);
+        if (current_ac && is_charging) {
+            snprintf(msg, sizeof(msg), "🔌 Charging Started");
+            return send_notification("Power is connected!", msg, BATTERY_CHARGING_ICON, 5000, NOTIFY_URGENCY_LOW);
+        } else if (current_ac && !is_charging) {
+            snprintf(msg, sizeof(msg), "🔋 Current capacity greater then %d%%\nUse built-in power supply", charge_start_threshold);
+            return send_notification("Power is connected!", msg, BATTERY_DISCHARING_ICON, 5000, NOTIFY_URGENCY_LOW);
         } else {
-            snprintf(msg, sizeof(msg), "Power is disconnected! Current capacity: %d%%", battery_state.prev_battery_percent);
-            return send_notification("🔋 Charging Stopped", msg,BATTERY_DISCHARING_ICON, 5000, NOTIFY_URGENCY_LOW);
+            snprintf(msg, sizeof(msg), "🔋 Use built-in power supply");
+            return send_notification("Power is disconnected!", msg,BATTERY_DISCHARING_ICON, 5000, NOTIFY_URGENCY_LOW);
         }
     } else {
         return EXIT_SUCCESS;

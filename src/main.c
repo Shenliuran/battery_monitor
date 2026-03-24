@@ -12,6 +12,7 @@
 #define AC_PATH "/sys/class/power_supply/AC/online"
 #define BATTERY_PATH "/sys/class/power_supply/BAT0/capacity"
 #define STATUS_PATH "/sys/class/power_supply/BAT0/status"
+#define CHARGE_START_THRESHOLD_PATH "/sys/class/power_supply/BAT0/charge_start_threshold"
 #define LOW_BATTERY_THRESHOLD 20
 #define LOW_BATTERY_STEP 5
 #define APP_NAME "battery-notifier"  // 通知的应用标识（自定义）
@@ -71,10 +72,12 @@ int main() {
                     char* ac_str = read_sysfs_file(AC_PATH);
                     char* capacity_str = read_sysfs_file(BATTERY_PATH);
                     char* status_str = read_sysfs_file(STATUS_PATH);
+                    char* charge_start_threshold_str = read_sysfs_file(CHARGE_START_THRESHOLD_PATH);
 
-                    if (ac_str && capacity_str && status_str) {
+                    if (ac_str && capacity_str && status_str && charge_start_threshold_str) {
                         int current_ac = atoi(ac_str);
                         int current_percent = atoi(capacity_str);
+                        int charge_start_threshold = atoi(charge_start_threshold_str);
 
                         // 初始化状态
                         if (battery_state.prev_battery_percent == -1) {
@@ -83,7 +86,12 @@ int main() {
                             printf("[*] Current battery: %d%%\n", current_percent);
                         }
 
-                        if (handle_ac_change(current_ac) & 
+                        if (strcmp(battery_state.prev_battery_status, "0")) {
+                            strcpy(battery_state.prev_battery_status, status_str);
+                            printf("[*] Current status: %s\n", status_str);
+                        }
+
+                        if (handle_ac_change(current_ac, status_str, charge_start_threshold) & 
                             handle_battery_status_change(status_str) &
                             handle_low_battery(current_percent)) {
                             fprintf(stderr, "Failed to create battery event handle.\n");
