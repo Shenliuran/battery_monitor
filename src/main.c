@@ -71,8 +71,9 @@ int main() {
                     // 读取最新状态
                     char* ac_str = read_sysfs_file(AC_PATH);
                     char* capacity_str = read_sysfs_file(BATTERY_PATH);
-                    char* status_str = read_sysfs_file(STATUS_PATH);
                     char* charge_start_threshold_str = read_sysfs_file(CHARGE_START_THRESHOLD_PATH);
+                    sleep(5);
+                    char* status_str = read_sysfs_file(STATUS_PATH);
 
                     if (ac_str && capacity_str && status_str && charge_start_threshold_str) {
                         int current_ac = atoi(ac_str);
@@ -86,7 +87,7 @@ int main() {
                             printf("[*] Current battery: %d%%\n", current_percent);
                         }
 
-                        if (strcmp(battery_state.prev_battery_status, "0")) {
+                        if (strcmp(battery_state.prev_battery_status, "\0") == 0) {
                             strcpy(battery_state.prev_battery_status, status_str);
                             printf("[*] Current status: %s\n", status_str);
                         }
@@ -101,6 +102,8 @@ int main() {
 
                         // 更新电量
                         battery_state.prev_battery_percent = current_percent;
+                        // strcpy(battery_state.prev_battery_status, status_str);
+                        
                     }
 
                     // 释放资源

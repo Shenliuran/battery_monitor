@@ -17,7 +17,8 @@ int handle_ac_change(int current_ac, const char* current_status, int charge_star
     if (current_ac != battery_state.prev_ac_online) {
         battery_state.prev_ac_online = current_ac;
         char msg[128];
-        int is_charging = strcmp(battery_state.prev_battery_status, current_status);
+        const char *charging_str = "Charging";
+        int is_charging = strcmp(current_status, charging_str) == 0;
 
         if (current_ac && is_charging) {
             snprintf(msg, sizeof(msg), "🔌 Charging Started");
